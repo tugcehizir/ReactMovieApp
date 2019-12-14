@@ -1,17 +1,16 @@
 import React, { Fragment, useState } from 'react';
-
+import { useDispatch } from 'react-redux';
 const SearchBar = () => {
     const [currentValue, setCurrentValue] = useState("");
+    // connect ile aynı işleve sahip dispatch gönderimi
+    const dispatch = useDispatch();
     const _onClick = () => {
         const result = fetch('https://www.omdbapi.com/?s=man&apikey=4a3b711b').then(result => {
             result.json().then(res => {
+                dispatch({ type: 'movie/request' });
                 console.log(res);
             });
-            // return result.json();
-            // })
-            // .then(res => {
-            //     console.log(res);
-            // });
+            // return result.json(); }) .then(res => { console.log(res); });
         })
     }
     const _onChange = (event) => {
