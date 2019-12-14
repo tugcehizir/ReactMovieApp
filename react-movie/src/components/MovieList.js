@@ -1,7 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter, useHistory } from 'react-router-dom';
 const MovieList = ({ loadingP, moviesP, request }) => {
-    console.log(loadingP, moviesP)
+    console.log(request)
+    //react-router history hook fonksiyon
+    const history = useHistory();
+    const _onClick = id => {
+        console.log('test:', id);
+        history.push({pathname: '/detay', state: {movieId: id}}); //Bu fonksiyona verilen path'e yönlendirir.
+    }
     if (loadingP === true) {
         return (
             <div>
@@ -13,7 +20,7 @@ const MovieList = ({ loadingP, moviesP, request }) => {
     return (
         <div>
             {moviesP.map(item => (
-                <div key={item.imdbID}>
+                <div key={item.imdbID} onClick={() => _onClick(item.imdbID)}>
                     <img src={item.Poster} alt="description" />
                     <h5>{item.Title}</h5>
                     <p>{item.Year}</p>
@@ -30,4 +37,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps)(MovieList);
+export default withRouter(connect(mapStateToProps)(MovieList));
