@@ -4,15 +4,28 @@ const SearchBar = () => {
     const [currentValue, setCurrentValue] = useState("");
     // connect ile aynı işleve sahip dispatch gönderimi
     const dispatch = useDispatch();
-    const _onClick = () => {
-        const result = fetch('https://www.omdbapi.com/?s=man&apikey=4a3b711b').then(result => {
-            result.json().then(res => {
-                dispatch({ type: 'movie/request' });
-                console.log(res);
-            });
-            // return result.json(); }) .then(res => { console.log(res); });
-        })
-    }
+    const _onClick = async () => {
+        dispatch({ type: 'movie/request' });
+        try {
+
+            const result = await fetch(`https://www.omdbapi.com/?s=${currentValue}&apikey=4a3b711b`);
+            const res = await result.json();
+            dispatch({ type: 'movie/success', data: res.Search });
+        }
+        catch (error) {
+            alert('opps!');
+        }
+
+
+        // fetch().then(result => {
+        //     dispatch({ type: 'movie/request' });
+        //     result.json().then(res => {
+        //         dispatch({ type: 'movie/success', data: res.Search})
+        //         console.log(res);
+        //     });
+        //     // return result.json(); }) .then(res => { console.log(res); });
+        // });
+    };
     const _onChange = (event) => {
         setCurrentValue(event.target.value);
 
@@ -21,7 +34,6 @@ const SearchBar = () => {
         <Fragment>
             <input onChange={_onChange}></input>
             <button onClick={_onClick}>Search!</button>
-
         </Fragment>
     )
 }
@@ -53,4 +65,5 @@ const SearchBar = () => {
 //     }
 // }
 //Buradan hangisinin adı verilirse o çalışır.
+//export default connect()(SearchBar);
 export default SearchBar;
