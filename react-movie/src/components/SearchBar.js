@@ -3,8 +3,17 @@ import React, { Fragment, useState } from 'react';
 const SearchBar = () => {
     const [currentValue, setCurrentValue] = useState("");
     const _onClick = () => {
-        console.log("currentValue:", currentValue);
-    };
+        const result = fetch('https://www.omdbapi.com/?s=man&apikey=4a3b711b').then(result => {
+            result.json().then(res => {
+                console.log(res);
+            });
+            // return result.json();
+            // })
+            // .then(res => {
+            //     console.log(res);
+            // });
+        })
+    }
     const _onChange = (event) => {
         setCurrentValue(event.target.value);
 
